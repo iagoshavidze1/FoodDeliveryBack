@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,9 +8,9 @@ using System.Text;
 
 namespace Infrastructure.Db
 {
-    public class FoodDeliveryDbContext : IdentityDbContext<User,Role,string>
+    public class FoodDeliveryDbContext : IdentityDbContext<User, Role, string>
     {
-        public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options):base(options)
+        public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options)
         {
 
         }

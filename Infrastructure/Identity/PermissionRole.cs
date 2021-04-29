@@ -6,8 +6,8 @@ namespace Infrastructure.Identity
     {
         public int Id { get; set; }
 
-        public ICollection<Permission> Permissions { get; set; } = new HashSet<Permission>();
+        public Permission Permission { get; set; }
 
-        public ICollection<Role> Roles { get; set; } = new HashSet<Role>();
+        public Role Role { get; set; }
     }
 }

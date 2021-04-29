@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Identity
+﻿using System.Collections.Generic;
+
+namespace Infrastructure.Identity
 {
     public class Permission
     {
@@ -7,5 +9,7 @@
         public string Key { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<PermissionRole> Roles { get; set; } = new HashSet<PermissionRole>();
     }
 }
