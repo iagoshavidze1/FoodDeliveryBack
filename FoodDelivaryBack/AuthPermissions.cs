@@ -1,33 +1,31 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FoodDelivaryBack
 {
-    public class AuthPermissions : Attribute, IActionFilter
+    public class AuthPermissions :Attribute, IAsyncActionFilter
     {
         private List<string> _permissions;
         public AuthPermissions(params string[] permissions)
         {
-
-        }
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-
+            _permissions = permissions.ToList();
         }
 
-        public void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var permissions = context.HttpContext.User.Claims.Where(x => x.Type == ClaimConstants.Permissions)
                  .Select(x => x.Value).ToList();
 
             foreach (var permission in _permissions)
             {
-                if (!permission.Contains(permission))
+                if (!permissions.Contains(permission))
                 {
                     context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
 
@@ -36,9 +34,13 @@ namespace FoodDelivaryBack
                         Message = $"Action requires Permissions:{permissionToString()}"
                     };
 
-                    context.HttpContext.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                    await context.HttpContext.Response.WriteAsync(JsonConvert.SerializeObject(message));
+
+                    return;
                 }
             }
+
+            await next.Invoke();
         }
 
         private string permissionToString()

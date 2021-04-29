@@ -38,13 +38,6 @@ namespace FoodDelivaryBack.Controllers.Account
 
             return Unauthorized(result);
         }
-
-        [HttpGet("test")]       
-        public void Test()
-        {
-
-        }
-
     }
 
     public class SignUpDto
